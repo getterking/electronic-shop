@@ -1,12 +1,19 @@
 {% extends 'base/base.html' %} {% load bootstrap3 %} 
 
 {% block search %}
-<form method="post" action="{% url 'search' %}" style="margin:auto;width:400px">
+<form method="post" action="{% url 'search' %}" style="margin:auto;width:600px">
     {% csrf_token %}
     <div class="form-group" style="display:inline-block;margin-bottom:0">
-        <label for="search" style="float:left;padding-top:7px">请输入搜索关键词：
-        </label>
-        <input type="text" id="search" name="search" class="form-control" placeholder="Keywords" required style="float:left;width:200px"/>
+        <div class="btn-group" data-toggle="buttons" style="float:left">
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option1" value="goods_type"> 按类型搜索
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option2" value="keywords" checked="true"> 按关键词搜索
+            </label>
+        </div>
+        <label for="search" style="float:left;padding-top:7px;margin-left:10px">请输入搜索关键词：</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Keywords" required style="float:left;width:200px" />
         <button type="submit" class="btn btn-primary">GO
         </button>
     </div>
@@ -15,31 +22,60 @@
 {% endblock %}
 
 {% block content %}
+{% if choice == 'keywords' %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3>Search Result of {% for target_key in target_keys %}<strong>{{ target_key.name | capfirst }} </strong>{% empty %}<strong>None</strong>{% endfor %}:</h3>
+        <h3>Search Result of {{ search_key }}</h3>
     </div>
     <div class="panel-body word-wrap">
         The goods related are as follows...
     </div>
     <div class="panel-footer"></div>
 </div>
-{% for target_key in target_keys %}
+{% for target_key in target %}
 <ul class="list-group">
     <li class="list-group-item">
     {{ target_key.name | capfirst }}相关: {{ target_key.keyword_goods.count }}件商品</li>
     {% for goods in target_key.keyword_goods.all|dictsort:"price" %}
     <li class="list-group-item clearfix">
         <div class="word-wrap">店铺：<a href="{% url 'shop' goods.shop.id %}">{{ goods.shop.name }}</a></div>
-        <div class="word-wrap">商品名：<a href="{% url 'goods' goods.id %}">{{ goods.name }}</a></div>
+        <div class="word-wrap">商品名：<a href="{% url 'goods' goods.shop.id goods.id %}">{{ goods.name }}</a></div>
         <div class="word-wrap">商品价格：{{ goods.price }}</div>
         <div class="word-wrap">商品简介：{{ goods.introduction }}</div>
-        <div class="word-wrap">商品类型：{% for key in goods.keywords.all|dictsort:"name" %}[ {{ key.name }} ] {% endfor %}</div>
-        <div class="pull-right">
+        <div class="word-wrap">商品类型：{% if goods.goods_type == "games" %}游戏{% elif goods.goods_type == "books" %}书籍{% elif goods.goods_type == "resources" %}资源{% else %}未定义{% endif %}</div>
+        <div class="word-wrap">商品关键词：{% for key in goods.keywords.all|dictsort:"name" %}[ {{ key.name }} ] {% endfor %}</div>        <div class="pull-right">
             {% bootstrap_icon 'user' %}<b>{{ goods.shop.owner.ori_user}}</b>
         </div>
     </li>
     {% endfor %}
 </ul>
 {% endfor %}
+
+{% elif choice == 'goods_type' %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Search Result of {{ search_key }}</h3>
+    </div>
+    <div class="panel-body word-wrap">
+        The goods related are as follows...
+    </div>
+    <div class="panel-footer"></div>
+</div>
+
+<ul class="list-group">
+    <li class="list-group-item pull-right">{{ target.count }}件商品</li>
+    {% for goods in target %}
+    <li class="list-group-item clearfix">
+        <div class="word-wrap">店铺：<a href="{% url 'shop' goods.shop.id %}">{{ goods.shop.name }}</a></div>
+        <div class="word-wrap">商品名：<a href="{% url 'goods' goods.shop.id goods.id %}">{{ goods.name }}</a></div>
+        <div class="word-wrap">商品价格：{{ goods.price }}</div>
+        <div class="word-wrap">商品简介：{{ goods.introduction }}</div>
+        <div class="word-wrap">商品类型：{% if goods.goods_type == "games" %}游戏{% elif goods.goods_type == "books" %}书籍{% elif goods.goods_type == "resources" %}资源{% else %}未定义{% endif %}</div>
+        <div class="word-wrap">商品关键词：{% for key in goods.keywords.all|dictsort:"name" %}[ {{ key.name }} ] {% endfor %}</div>
+        <div class="pull-right">{% bootstrap_icon 'user' %}<b>{{ goods.shop.owner.ori_user}}</b></div>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endif %}
 {% endblock %}

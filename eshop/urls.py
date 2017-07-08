@@ -114,6 +114,9 @@ urlpatterns = [
     #保存商品信息
     url(r'^shop_homepage/([1-9][0-9]*)/shop_goods/save_goods_info/([1-9][0-9]*)$', GoodsManager.save_goods_info,
         name='save_goods_info'),
+    #删除商品
+    url(r'^shop_homepage/([1-9][0-9]*)/shop_goods/delete_goods/([1-9][0-9]*)$', GoodsManager.delete_goods,
+        name='delete_goods'),
     #店铺订单列表
     url(r'^shop_homepage/([1-9][0-9]*)/shop_remittances$', ShopRemittanceManager.shop_remittances,
         name='shop_remittances'),

@@ -1,9 +1,7 @@
-{% extends 'seller/shop_homepage.html' %}
-{% load bootstrap3 %}
-{% block homepage_content %}
+{% extends 'seller/shop_homepage.html' %} {% load bootstrap3 %} {% block homepage_content %}
 <h2>商品信息</h2>
-<form method="post" enctype="multipart/form-data" action="{% url 'save_goods_info' shop.id goods.id %}" style="float:left">
-    <ul class="list-group">
+<form method="post" enctype="multipart/form-data" action="{% url 'save_goods_info' shop.id goods.id %}" style="float:left;width:100%">
+    <ul class="list-group" >
         <li class="list-group-item clearfix">
             <div class="word-wrap">
                 {% bootstrap_icon 'home' %}{{ goods.name }}
@@ -16,29 +14,45 @@
                         <tr>
                             <td style="border-top:0">
                                 {% csrf_token %}
-                                <div class="form-group" style="display:inline-block;margin-bottom:0">
-                                    <label for="name" style="float:left;padding-top:7px">名称：
+                                <div class="form-group" style="display:inline-block;margin-bottom:0;width:100%">
+                                    <label for="goods_type" style="float:left;padding-top:7px">商品分类：
                                     </label>
-                                    <input type="text" id="name" name="name" class="form-control" placeholder="输入修改的商品名" value="{{ goods.name }}" required style="float:left;width:400px" />
+                                    <input type="text" id="goods_type" name="goods_type" list="type_list" class="form-control" placeholder="Your goods type..." style="float:left;width:84%" required />
+                                    <datalist id="type_list">
+                                        <option label="游戏" value="games"></option>
+                                        <option label="书籍" value="books"></option>
+                                        <option label="资源" value="resources"></option>
+                                        <option label="我不知道" value="unknown"></option>
+                                    </datalist>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 {% csrf_token %}
-                                <div class="form-group" style="display:inline-block;margin-bottom:0">
-                                    <label for="price" style="float:left;padding-top:7px">价格：
+                                <div class="form-group" style="display:inline-block;margin-bottom:0;width:100%">
+                                    <label for="name" style="float:left;padding-top:7px">名称：
                                     </label>
-                                    <input type="number" id="price" name="price" class="form-control" value="{{ goods.price }}" required style="float:left;width:400px" />
+                                    <input type="text" id="name" name="name" class="form-control" placeholder="输入修改的商品名" value="{{ goods.name }}" required style="float:left;width:87%" />
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <div class="form-group" style="display:inline-block;margin-bottom:0">
-                                    <label for="introduction" style="float:left;padding-top:7px" >商品简介：
+                                {% csrf_token %}
+                                <div class="form-group" style="display:inline-block;margin-bottom:0;width:100%">
+                                    <label for="price" style="float:left;padding-top:7px">价格：
                                     </label>
-                                    <textarea id="introduction" name="introduction" class="form-control" required style="float:left;width:370px"></textarea>
+                                    <input type="number" id="price" name="price" class="form-control" value="{{ goods.price }}" required style="float:left;width:87%" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group" style="display:inline-block;margin-bottom:0;width:100%">
+                                    <label for="introduction" style="float:left;padding-top:7px;">商品简介：
+                                    </label>
+                                    <textarea id="introduction" name="introduction" class="form-control" required style="float:left;width:84%"></textarea>
                                 </div>
                             </td>
                         </tr>

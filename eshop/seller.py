@@ -81,12 +81,23 @@ class GoodsManager:
         shop = get_object_or_404(Shop, pk = shop_id)
         return render(request, 'seller/change_goods_info.html', {'shop': shop, 'goods': goods})
 
+    def delete_goods(request, shop_id, goods_id):
+        goods = get_object_or_404(Goods, pk = goods_id)
+        shop = get_object_or_404(Shop, pk = shop_id)
+        if not Remittance.objects.exclude(status = 'e').filter(remittance_item__goods = goods).exists():
+            goods.delete()
+        else:
+            messages.info(request, '商品《{}》删除失败，已在订单中'.format(goods.name))
+        return render(request, 'seller/shop_goods.html', {'shop': shop})
+
     def save_goods_info(request, shop_id, goods_id):
         shop = get_object_or_404(Shop, pk = shop_id)
         goods = get_object_or_404(Goods, pk = goods_id)
+        goods.goods_type = request.POST.get("goods_type")
         goods.name = request.POST.get("name")
         goods.price = request.POST.get("price")
         goods.introduction = request.POST.get("introduction")
+        goods.save()
         return render(request, 'seller/save_goods_info.html', {'shop': shop, 'goods': goods})
 
 class ShopRemittanceManager:

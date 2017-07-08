@@ -9,7 +9,7 @@ class ShopForm(forms.ModelForm):
 class GoodsForm(forms.ModelForm):
     class Meta:
         model = Goods
-        fields = ('name', 'price', 'introduction')
+        fields = ('goods_type', 'name', 'price', 'introduction')
 
 class ShoppingCartItemForm(forms.ModelForm):
     class Meta:

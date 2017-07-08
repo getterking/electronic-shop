@@ -7,16 +7,21 @@ import decimal
 
 class Search:
     def search(request):
-        param = request.POST.get('search')
-        target_keys = Keyword.objects.filter(name__contains=param).order_by("name")
-        ids=[]
-        for key in target_keys:
-            ids.append(key.id)
-        ids = set(ids)
-        target_keys = []
-        for Id in ids:
-            target_keys.append(get_object_or_404(Keyword, pk=Id))
-        return render(request, 'customer/search.html', {'target_keys': target_keys})
+        search_key = request.POST.get('search')
+        choice = request.POST.get("options")
+        if choice == 'keywords':
+            target = Keyword.objects.filter(name__contains=search_key).order_by("name")
+            ids=[]
+            for key in target:
+                ids.append(key.id)
+            ids = set(ids)
+            target = []
+            for Id in ids:
+                target.append(get_object_or_404(Keyword, pk=Id))
+        elif choice == 'goods_type':
+            
+            target = Goods.objects.filter(goods_type__contains=search_key).order_by("name")
+        return render(request, 'customer/search.html', {'target': target, 'choice': choice, 'search_key': search_key})
 
 class Buy:
     def shoppingcart(request):

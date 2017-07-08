@@ -1,36 +1,33 @@
-{% extends 'base/base.html' %} {% load bootstrap3 %} {% load humanize %}
-{% block create_shop %}
-{% if user.real_user.is_owner %}
+{% extends 'base/base.html' %} {% load bootstrap3 %} {% load humanize %} {% block create_shop %} {% if user.real_user.is_owner %}
 <li role="presentation">
     <a href="{% url 'create_shop' %}">创建店铺</a>
 </li>
-{% endif %}
-{% endblock %}
-
-{% block search %}
-
-<form method="post" action="{% url 'search' %}" style="margin:auto;width:400px">
+{% endif %} {% endblock %} {% block search %}
+<form method="post" action="{% url 'search' %}" style="margin:auto;width:600px">
     {% csrf_token %}
     <div class="form-group" style="display:inline-block;margin-bottom:0">
-        <label for="search" style="float:left;padding-top:7px">请输入搜索关键词：
-        </label>
-        <input type="text" id="search" name="search" class="form-control" placeholder="Keywords" required style="float:left;width:200px"/>
+        <div class="btn-group" data-toggle="buttons" style="float:left">
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option1" value="goods_type" > 按类型搜索
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option2" value="keywords" checked="true"> 按关键词搜索
+            </label>
+        </div>
+        <label for="search" style="float:left;padding-top:7px;margin-left:10px">请输入搜索关键词：</label>
+        <input type="text" id="search" name="search" class="form-control" placeholder="Keywords" required style="float:left;width:200px" />
         <button type="submit" class="btn btn-primary">GO
         </button>
     </div>
 </form>
-
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <table class="table">
     <tbody>
         {% for shop in shops %}
         <tr>
             <td><a href="{% url 'shop' shop.id %}">{{shop.name}}</a>
                 <div class="pull-right">
-                    {% bootstrap_icon 'user' %}<b>{{shop.owner.ori_user}}</b> 
-                    {% bootstrap_icon 'time' %} {{shop.created_at | naturaltime}}
+                    {% bootstrap_icon 'user' %}<b>{{shop.owner.ori_user}}</b> {% bootstrap_icon 'time' %} {{shop.created_at | naturaltime}}
                 </div>
             </td>
         </tr>

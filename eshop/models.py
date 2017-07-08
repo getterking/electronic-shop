@@ -65,9 +65,6 @@ class RemittanceItem(models.Model):
             related_name = 'remittance_item')
     number = models.PositiveIntegerField()
 
-class Type(models.Model):
-    name = models.CharField(max_length = 20)
-
 class Goods(models.Model):
     shop = models.ForeignKey('Shop',
             related_name = 'goods',
@@ -78,10 +75,13 @@ class Goods(models.Model):
     total_score = models.FloatField(default=0)
     score_num = models.IntegerField(default=0)
     score = models.DecimalField(max_digits = 2, decimal_places = 1, default = 0)
-    goods_type = models.ForeignKey('Type',
-            related_name = 'type_goods',
-            related_query_name = 'type_goods',
-            null = True)
+    GOODS_TYPE_CHOICE = (
+            ("games", '游戏'),
+            ("books", '书籍'),
+            ("resources", '资源'),
+            ("unknown", '我不知道')
+        )
+    goods_type = models.CharField(max_length = 20, choices=GOODS_TYPE_CHOICE, default="unknown")
     keywords = models.ManyToManyField('Keyword',
             related_name = 'keyword_goods',
             related_query_name = 'keyword_goods')
