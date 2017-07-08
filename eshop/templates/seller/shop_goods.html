@@ -15,8 +15,8 @@
     </li>
     <li class="list-group-item clearfix">
         <ul>
-            <!--<li style="float:right;list-style:none;width:60px"><a href="{% url 'delete_goods' shop.id goods.id %}">删除商品</a></li>-->
-            <li style="float:right;list-style:none;"><a href="{% url 'change_goods_info' shop.id goods.id %}">修改商品信息</a></li>
+            <li style="float:right;list-style:none;width:60px"><a href="{% url 'delete_goods' shop.id goods.id %}">删除商品</a></li>
+            <li style="float:right;list-style:none;width:100px"><a href="{% url 'change_goods_info' shop.id goods.id %}">修改商品信息</a></li>
         </ul>
     {% endfor %}
 </ul>

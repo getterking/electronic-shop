@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %} {% load bootstrap3 %} 
 
 {% block search %}
-<form method="post" action="{% url 'search' %}" style="margin:auto;width:600px">
+<form method="post" action="{% url 'search' %}" style="margin:auto;width:720px">
     {% csrf_token %}
     <div class="form-group" style="display:inline-block;margin-bottom:0">
         <div class="btn-group" data-toggle="buttons" style="float:left">
@@ -9,7 +9,10 @@
                 <input type="radio" name="options" id="option1" value="goods_type"> 按类型搜索
             </label>
             <label class="btn btn-primary">
-                <input type="radio" name="options" id="option2" value="keywords" checked="true"> 按关键词搜索
+                <input type="radio" name="options" id="option2" value="keywords"> 按关键词搜索
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" name="options" id="option3" value="name" checked="true"> 按商品名搜索
             </label>
         </div>
         <label for="search" style="float:left;padding-top:7px;margin-left:10px">请输入搜索关键词：</label>
@@ -51,7 +54,7 @@
 </ul>
 {% endfor %}
 
-{% elif choice == 'goods_type' %}
+{% elif choice == 'goods_type' or choice == 'name' %}
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3>Search Result of {{ search_key }}</h3>

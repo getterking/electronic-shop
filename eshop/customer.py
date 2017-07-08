@@ -19,8 +19,9 @@ class Search:
             for Id in ids:
                 target.append(get_object_or_404(Keyword, pk=Id))
         elif choice == 'goods_type':
-            
             target = Goods.objects.filter(goods_type__contains=search_key).order_by("name")
+        elif choice == 'name':
+            target = Goods.objects.filter(name__contains=search_key).order_by("name")           
         return render(request, 'customer/search.html', {'target': target, 'choice': choice, 'search_key': search_key})
 
 class Buy:
